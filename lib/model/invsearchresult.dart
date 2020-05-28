@@ -1,0 +1,4 @@
+class InvSearchResult{
+
+  var html;
+}

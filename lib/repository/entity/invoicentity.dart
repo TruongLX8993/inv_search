@@ -2,6 +2,7 @@
 class InvEntity{
   String _html;
 
+
   String getHtml(){
     return _html;
   }

@@ -1,8 +1,8 @@
 
 
-import 'package:sds_invoice_search/common/repository/entity/invoicentity.dart';
+import 'package:sds_invoice_search/repository/entity/invoicentity.dart';
 
-abstract class InvRepository{
+abstract class InvRepository {
 
-  InvEntity getByFKey(String fKey);
+  Future<InvEntity> getByFKey(String taxCode,String fKey)  ;
 }

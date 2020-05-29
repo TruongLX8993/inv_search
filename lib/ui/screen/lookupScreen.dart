@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'lookupresultscreen.dart';
+
 class LockupScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _LookUpScreenState();
@@ -62,9 +64,25 @@ class _BodyWidgest extends StatefulWidget {
 class _BodyWidgestState extends State<_BodyWidgest> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
+void onPressed () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => LookUpDetailScreen()),
+  );
+}
   @override
   Widget build(BuildContext context) {
-    final passwordField = TextField(
+    final taxCodeField = TextField(
+      obscureText: true,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "tax code",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+
+    final fkeyField = TextField(
       obscureText: true,
       style: style,
       decoration: InputDecoration(
@@ -73,14 +91,14 @@ class _BodyWidgestState extends State<_BodyWidgest> {
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
-    final loginButon = Material(
+    final searchBtn = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Text("Search",
             textAlign: TextAlign.center,
             style: style.copyWith(
@@ -105,11 +123,13 @@ class _BodyWidgestState extends State<_BodyWidgest> {
                   ),
                 ),
                 SizedBox(height: 25.0),
-                passwordField,
+                taxCodeField,
+                SizedBox(height: 25.0),
+                fkeyField,
                 SizedBox(
                   height: 35.0,
                 ),
-                loginButon,
+                searchBtn,
                 SizedBox(
                   height: 15.0,
                 ),

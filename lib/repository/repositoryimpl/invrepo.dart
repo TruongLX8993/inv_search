@@ -5,7 +5,7 @@ import 'package:sds_invoice_search/repository/irepository/invrepo.dart';
 class InvRepositoryImpl implements InvRepository {
   @override
   Future<InvEntity> getByFKey(String taxCode, String fKey) async {
-    String html = await LookupApi().searh(taxCode, fKey);
+    String html = await LookupApi().search(taxCode, fKey);
     return InvEntity(html);
   }
 }

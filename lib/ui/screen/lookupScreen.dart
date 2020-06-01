@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../bloc/invsearchbloc.dart';
+import '../model/InvModel.dart';
 import 'lookupresultscreen.dart';
 
 class LockupScreen extends StatefulWidget {
@@ -12,19 +14,6 @@ class _LookUpScreenState extends State<LockupScreen> {
   static const String INVENTORY_TAB_TITLE = 'Search Inventory';
 
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: $INVENTORY_TAB_TITLE',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: $INVENTORY_TAB_TITLE',
-      style: optionStyle,
-    )
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -62,19 +51,51 @@ class _BodyWidgest extends StatefulWidget {
 }
 
 class _BodyWidgestState extends State<_BodyWidgest> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  static const _dbTaxCode = '0105987432-991';
+  static const _dbLookUPCode = 'A6A3L7E2063392228837728';
 
-void onPressed () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => LookUpDetailScreen()),
-  );
-}
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  InvoiceSearchBloc bloc = InvoiceSearchBloc();
+  TextEditingController taxCodeFieldController = new TextEditingController();
+  TextEditingController lookupCodeFieldController = new TextEditingController();
+
+  TextField fkeyField;
+
+  void onPressed() {
+    String taxCode = taxCodeFieldController.text;
+    String lookupCode = lookupCodeFieldController.text;
+    bloc.search(taxCode, lookupCode);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    bloc.stream.listen((event) {
+      if (event.status == 1) {
+        var model = new InvModel();
+        model.html = event.html;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LookUpDetailScreen(model)),
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    bloc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final taxCodeField = TextField(
-      obscureText: true,
+      obscureText: false,
       style: style,
+      controller: taxCodeFieldController,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "tax code",
@@ -82,9 +103,10 @@ void onPressed () {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
-    final fkeyField = TextField(
-      obscureText: true,
+    fkeyField = TextField(
+      obscureText: false,
       style: style,
+      controller: lookupCodeFieldController,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Lookup code",
@@ -105,6 +127,8 @@ void onPressed () {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
+    lookupCodeFieldController.text =  _dbLookUPCode;
+    taxCodeFieldController.text = _dbTaxCode;
     return Scaffold(
       body: Center(
         child: Container(

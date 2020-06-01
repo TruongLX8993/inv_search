@@ -13,5 +13,5 @@ void main() {
 }
 
 void testGetApi(){
-  LookupApi().searh('0105987432-991', 'A6A3L7E2063392228837728').then((val) => print(val));
+  LookupApi().search('0105987432-991', 'A6A3L7E2063392228837728').then((val) => print(val));
 }
